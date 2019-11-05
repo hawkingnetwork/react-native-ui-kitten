@@ -35,7 +35,7 @@ interface ComponentProps {
   icon?: IconProp;
   status?: string;
   size?: string;
-  children?: string;
+  children?: React.ReactNode;
 }
 
 export type ButtonProps = StyledComponentProps & TouchableOpacityProps & ComponentProps;
@@ -150,7 +150,7 @@ export class ButtonComponent extends React.Component<ButtonProps> {
       <Text
         key={1}
         style={[style, styles.text, this.props.textStyle]}>
-        {this.props.children}
+        {this.props.children as string}
       </Text>
     );
   };
@@ -169,7 +169,7 @@ export class ButtonComponent extends React.Component<ButtonProps> {
 
     return [
       icon && this.renderIconElement(style.icon),
-      isValidString(children) && this.renderTextElement(style.text),
+      isValidString(children as string) ? this.renderTextElement(style.text) : children,
     ];
   };
 

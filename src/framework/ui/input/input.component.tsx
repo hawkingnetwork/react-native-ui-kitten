@@ -54,6 +54,7 @@ interface ComponentProps {
   labelStyle?: StyleProp<TextStyle>;
   captionTextStyle?: StyleProp<TextStyle>;
   onIconPress?: (event: GestureResponderEvent) => void;
+  startEnhancer?: React.ReactNode;
 }
 
 export type InputProps = StyledComponentProps & TextInputProps & ComponentProps;
@@ -305,7 +306,7 @@ export class InputComponent extends React.Component<InputProps> {
   };
 
   public render(): React.ReactElement<ViewProps> {
-    const { themedStyle, textStyle, ...restProps } = this.props;
+    const { themedStyle, textStyle, startEnhancer, ...restProps } = this.props;
     const componentStyle: StyleType = this.getComponentStyle(themedStyle);
 
     const [
@@ -320,6 +321,7 @@ export class InputComponent extends React.Component<InputProps> {
         {labelElement}
         <View
           style={[componentStyle.inputContainer, styles.inputContainer]}>
+          {startEnhancer}
           <TextInput
             ref={this.textInputRef}
             {...restProps}
