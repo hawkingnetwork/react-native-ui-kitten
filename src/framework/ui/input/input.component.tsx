@@ -26,18 +26,9 @@ import {
   StyledComponentProps,
   StyleType,
 } from '@kitten/theme';
-import {
-  Text,
-  TextElement,
-} from '../text/text.component';
-import {
-  allWithRest,
-  isValidString,
-} from '../support/services';
-import {
-  FlexStyleProps,
-  InputFocusEvent,
-} from '../support/typings';
+import { Text, TextElement } from '../text/text.component';
+import { allWithRest, isValidString } from '../support/services';
+import { FlexStyleProps, InputFocusEvent } from '../support/typings';
 
 type IconElement = React.ReactElement<ImageProps>;
 type IconProp = (style: StyleType) => IconElement;
@@ -54,7 +45,9 @@ interface ComponentProps {
   labelStyle?: StyleProp<TextStyle>;
   captionTextStyle?: StyleProp<TextStyle>;
   onIconPress?: (event: GestureResponderEvent) => void;
-  startEnhancer?: React.ReactNode;
+  startEnhancer?: React.ReactElement;
+  endEnhancer?: React.ReactElement;
+  inputContainerStyle?: StyleProp<ViewStyle>;
 }
 
 export type InputProps = StyledComponentProps & TextInputProps & ComponentProps;
@@ -121,7 +114,6 @@ export type InputElement = React.ReactElement<InputProps>;
  * @example InputWithExternalSourceIcon
  */
 export class InputComponent extends React.Component<InputProps> {
-
   static styledComponentName: string = 'Input';
 
   private textInputRef: React.RefObject<TextInput> = React.createRef();
@@ -166,7 +158,10 @@ export class InputComponent extends React.Component<InputProps> {
 
   private getComponentStyle = (source: StyleType): StyleType => {
     const flatStyles: ViewStyle = StyleSheet.flatten(this.props.style);
-    const { rest: inputContainerStyle, ...containerStyle } = allWithRest(flatStyles, FlexStyleProps);
+    const { rest: inputContainerStyle, ...containerStyle } = allWithRest(
+      flatStyles,
+      FlexStyleProps,
+    );
 
     const {
       textMarginHorizontal,
@@ -246,7 +241,9 @@ export class InputComponent extends React.Component<InputProps> {
     };
   };
 
-  private renderIconTouchableElement = (style: StyleType): React.ReactElement<TouchableWithoutFeedbackProps> => {
+  private renderIconTouchableElement = (
+    style: StyleType,
+  ): React.ReactElement<TouchableWithoutFeedbackProps> => {
     const iconElement: IconElement = this.renderIconElement(style);
 
     return (
@@ -267,9 +264,7 @@ export class InputComponent extends React.Component<InputProps> {
 
   private renderLabelElement = (style: TextStyle): TextElement => {
     return (
-      <Text
-        key={1}
-        style={[style, styles.label, this.props.labelStyle]}>
+      <Text key={1} style={[style, styles.label, this.props.labelStyle]}>
         {this.props.label}
       </Text>
     );
@@ -279,7 +274,8 @@ export class InputComponent extends React.Component<InputProps> {
     return (
       <Text
         key={2}
-        style={[style, styles.captionLabel, this.props.captionTextStyle]}>
+        style={[style, styles.captionLabel, this.props.captionTextStyle]}
+      >
         {this.props.caption}
       </Text>
     );
@@ -294,7 +290,9 @@ export class InputComponent extends React.Component<InputProps> {
     });
   };
 
-  private renderComponentChildren = (style: StyleType): React.ReactNodeArray => {
+  private renderComponentChildren = (
+    style: StyleType,
+  ): React.ReactNodeArray => {
     const { icon, label, captionIcon, caption } = this.props;
 
     return [
@@ -306,7 +304,14 @@ export class InputComponent extends React.Component<InputProps> {
   };
 
   public render(): React.ReactElement<ViewProps> {
-    const { themedStyle, textStyle, startEnhancer, ...restProps } = this.props;
+    const {
+      themedStyle,
+      textStyle,
+      startEnhancer,
+      endEnhancer,
+      inputContainerStyle,
+      ...restProps
+    } = this.props;
     const componentStyle: StyleType = this.getComponentStyle(themedStyle);
 
     const [
@@ -316,24 +321,36 @@ export class InputComponent extends React.Component<InputProps> {
       captionIconElement,
     ] = this.renderComponentChildren(componentStyle);
 
+    console.tron.log('componentStyle', componentStyle);
+
     return (
       <View style={[componentStyle.container, styles.container]}>
         {labelElement}
-        <View
-          style={[componentStyle.inputContainer, styles.inputContainer]}>
+        <View style={[styles.inputAndEnhancerContainer]}>
           {startEnhancer}
-          <TextInput
-            ref={this.textInputRef}
-            {...restProps}
-            style={[componentStyle.text, styles.text, textStyle]}
-            placeholderTextColor={componentStyle.placeholder.color}
-            editable={!restProps.disabled}
-            onFocus={this.onTextFieldFocus}
-            onBlur={this.onTextFieldBlur}
-          />
-          {iconElement}
+          <View
+            style={[
+              componentStyle.inputContainer,
+              styles.inputContainer,
+              inputContainerStyle,
+            ]}
+          >
+            <TextInput
+              ref={this.textInputRef}
+              {...restProps}
+              style={[componentStyle.text, styles.text, textStyle]}
+              placeholderTextColor={componentStyle.placeholder.color}
+              editable={!restProps.disabled}
+              onFocus={this.onTextFieldFocus}
+              onBlur={this.onTextFieldBlur}
+            />
+            {iconElement}
+          </View>
+          {endEnhancer}
         </View>
-        <View style={[componentStyle.captionContainer, styles.captionContainer]}>
+        <View
+          style={[componentStyle.captionContainer, styles.captionContainer]}
+        >
           {captionIconElement}
           {captionElement}
         </View>
@@ -344,10 +361,14 @@ export class InputComponent extends React.Component<InputProps> {
 
 const styles = StyleSheet.create({
   container: {},
+  inputAndEnhancerContainer: {
+    flexDirection: 'row',
+  },
+
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
+    flex: 1,
   },
   captionContainer: {
     flexDirection: 'row',
