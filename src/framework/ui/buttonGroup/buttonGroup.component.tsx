@@ -110,7 +110,6 @@ class ButtonGroupComponent extends React.Component<ButtonGroupProps> {
       key: index,
       appearance: appearance,
       size: size,
-      status: status,
       style: [element.props.style, styles.button, shapeStyle, startShapeStyle, endShapeStyle],
     });
   };
