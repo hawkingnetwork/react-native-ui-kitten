@@ -321,8 +321,6 @@ export class InputComponent extends React.Component<InputProps> {
       captionIconElement,
     ] = this.renderComponentChildren(componentStyle);
 
-    console.tron.log('componentStyle', componentStyle);
-
     return (
       <View style={[componentStyle.container, styles.container]}>
         {labelElement}
