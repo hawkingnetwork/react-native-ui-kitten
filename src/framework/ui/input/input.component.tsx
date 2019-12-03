@@ -48,6 +48,8 @@ interface ComponentProps {
   startEnhancer?: React.ReactElement;
   endEnhancer?: React.ReactElement;
   inputContainerStyle?: StyleProp<ViewStyle>;
+  innerStartEnhancer?: React.ReactElement;
+  innerEndEnhancer?: React.ReactElement;
 }
 
 export type InputProps = StyledComponentProps & TextInputProps & ComponentProps;
@@ -310,6 +312,8 @@ export class InputComponent extends React.Component<InputProps> {
       startEnhancer,
       endEnhancer,
       inputContainerStyle,
+      innerStartEnhancer,
+      innerEndEnhancer,
       ...restProps
     } = this.props;
     const componentStyle: StyleType = this.getComponentStyle(themedStyle);
@@ -333,6 +337,7 @@ export class InputComponent extends React.Component<InputProps> {
               inputContainerStyle,
             ]}
           >
+            {innerStartEnhancer}
             <TextInput
               ref={this.textInputRef}
               {...restProps}
@@ -343,6 +348,7 @@ export class InputComponent extends React.Component<InputProps> {
               onBlur={this.onTextFieldBlur}
             />
             {iconElement}
+            {innerEndEnhancer}
           </View>
           {endEnhancer}
         </View>

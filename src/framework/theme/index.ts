@@ -1,34 +1,57 @@
-export {
+import {
   styled,
-  StyledComponentProps,
-  StyledComponentClass,
+  StyledComponentProps as IStyledComponentProps,
+  StyledComponentClass as IStyledComponentClass,
 } from './style/styleConsumer.component';
-export {
+
+export { styled };
+export type StyledComponentProps = IStyledComponentProps;
+export type StyledComponentClass<P> = IStyledComponentClass<P>;
+
+import {
   withStyles,
-  ThemedComponentProps,
-  ThemedComponentClass,
+  ThemedComponentProps as IThemedComponentProps,
+  ThemedComponentClass as IThemedComponentClass,
 } from './theme/themeConsumer.component';
-export {
+
+export { withStyles };
+export type ThemedComponentProps = IThemedComponentProps;
+export type ThemedComponentClass<P> = IThemedComponentClass<P>;
+
+import {
   ApplicationProvider,
-  ApplicationProviderProps,
-  ApplicationProviderElement,
+  ApplicationProviderProps as IApplicationProviderProps,
+  ApplicationProviderElement as IApplicationProviderElement,
 } from './application/applicationProvider.component';
-export {
+
+export { ApplicationProvider };
+export type ApplicationProviderProps = IApplicationProviderProps;
+export type ApplicationProviderElement = IApplicationProviderElement;
+
+import {
   ModalPanel,
-  ModalPanelProps,
+  ModalPanelProps as IModalPanelProps,
 } from './modal/modalPanel.component';
-export {
+
+export { ModalPanel };
+export type ModalPanelProps = IModalPanelProps;
+
+import {
   ThemeProvider,
-  ThemeProviderProps,
+  ThemeProviderProps as IThemeProviderProps,
 } from './theme/themeProvider.component';
+
+export { ThemeProvider };
+export type ThemeProviderProps = IThemeProviderProps;
+
 export { ModalService } from './modal/modal.service';
-export {
-  Interaction,
-  State,
-  StyleType,
-} from './style/type';
-export {
-  ThemeType,
-  ThemedStyleType,
-  StyleSheetType,
-} from './theme/type';
+
+import { Interaction, State, StyleType as IStyleType } from './style/type';
+
+export { Interaction, State };
+export type StyleType = IStyleType;
+
+import { ThemeType, ThemedStyleType, StyleSheetType } from './theme/type';
+export type ThemeType = ThemeType;
+export type ThemedStyleType = ThemedStyleType;
+export type StyleSheetType = StyleSheetType;
