@@ -201,7 +201,7 @@ class CheckBoxComponent extends React.Component<CheckBoxProps> {
         : React.isValidElement(text)
         ? React.cloneElement(text, {
             key: 2,
-            style: [style, styles.text, text.props.style],
+            style: [style.text, styles.text, text.props.style],
           })
         : text,
     ];
