@@ -23,10 +23,7 @@ import {
   StyledComponentProps,
   StyleType,
 } from '@kitten/theme';
-import {
-  Text,
-  TextElement,
-} from '../text/text.component';
+import { Text, TextElement } from '../text/text.component';
 import { CheckMark } from '../support/components';
 import { isValidString } from '../support/services';
 
@@ -34,14 +31,16 @@ type IconElement = React.ReactElement<ViewProps>;
 
 interface ComponentProps {
   textStyle?: StyleProp<TextStyle>;
-  text?: string;
+  text?: React.ReactNode;
   checked?: boolean;
   indeterminate?: boolean;
   status?: string;
   onChange?: (checked: boolean, indeterminate: boolean) => void;
 }
 
-export type CheckBoxProps = StyledComponentProps & TouchableOpacityProps & ComponentProps;
+export type CheckBoxProps = StyledComponentProps &
+  TouchableOpacityProps &
+  ComponentProps;
 export type CheckBoxElement = React.ReactElement<CheckBoxProps>;
 
 /**
@@ -80,7 +79,6 @@ export type CheckBoxElement = React.ReactElement<CheckBoxProps>;
  * @example CheckboxInlineStyling
  */
 class CheckBoxComponent extends React.Component<CheckBoxProps> {
-
   static styledComponentName: string = 'CheckBox';
 
   private onPress = (): void => {
@@ -170,21 +168,15 @@ class CheckBoxComponent extends React.Component<CheckBoxProps> {
   private renderTextElement = (style: TextStyle): TextElement => {
     const { text, textStyle } = this.props;
 
-    return (
-      <Text style={[style, styles.text, textStyle]}>{text}</Text>
-    );
+    return <Text style={[style, styles.text, textStyle]}>{text as any}</Text>;
   };
 
   private renderSelectIconElement = (style: ViewStyle): IconElement => {
-    return (
-      <CheckMark style={[style, styles.icon]}/>
-    );
+    return <CheckMark style={[style, styles.icon]} />;
   };
 
   private renderIndeterminateIconElement = (style: ViewStyle): IconElement => {
-    return (
-      <View style={[style, styles.icon]}/>
-    );
+    return <View style={[style, styles.icon]} />;
   };
 
   private renderIconElement = (style: ViewStyle): IconElement => {
@@ -195,12 +187,23 @@ class CheckBoxComponent extends React.Component<CheckBoxProps> {
     }
   };
 
-  private renderComponentChildren = (style: StyleType): React.ReactNodeArray => {
+  private renderComponentChildren = (
+    style: StyleType,
+  ): React.ReactNodeArray => {
     const { text } = this.props;
 
     return [
       this.renderIconElement(style.icon),
-      isValidString(text) && this.renderTextElement(style.text),
+      isValidString(text as any)
+        ? this.renderTextElement(style.text)
+        : typeof text === 'function'
+        ? text([style.text, styles.text])
+        : React.isValidElement(text)
+        ? React.cloneElement(text, {
+            key: 2,
+            style: [style, styles.text, text.props.style],
+          })
+        : text,
     ];
   };
 
@@ -215,10 +218,17 @@ class CheckBoxComponent extends React.Component<CheckBoxProps> {
       ...componentStyle
     } = this.getComponentStyle(themedStyle);
 
-    const selectContainerStyle: StyleProp<ViewStyle> = [selectContainer, styles.selectContainer];
-    const hitSlopInsets: Insets = this.createHitSlopInsets(selectContainerStyle);
+    const selectContainerStyle: StyleProp<ViewStyle> = [
+      selectContainer,
+      styles.selectContainer,
+    ];
+    const hitSlopInsets: Insets = this.createHitSlopInsets(
+      selectContainerStyle,
+    );
 
-    const [iconElement, textElement] = this.renderComponentChildren(componentStyle);
+    const [iconElement, textElement] = this.renderComponentChildren(
+      componentStyle,
+    );
 
     return (
       <TouchableOpacity
@@ -229,12 +239,11 @@ class CheckBoxComponent extends React.Component<CheckBoxProps> {
         hitSlop={hitSlopInsets}
         onPress={this.onPress}
         onPressIn={this.onPressIn}
-        onPressOut={this.onPressOut}>
+        onPressOut={this.onPressOut}
+      >
         <View style={[highlightContainer, styles.highlightContainer]}>
-          <View style={[highlight, styles.highlight]}/>
-          <View style={selectContainerStyle}>
-            {iconElement}
-          </View>
+          <View style={[highlight, styles.highlight]} />
+          <View style={selectContainerStyle}>{iconElement}</View>
         </View>
         {textElement}
       </TouchableOpacity>
