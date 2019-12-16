@@ -50,6 +50,8 @@ interface ComponentProps {
   inputContainerStyle?: StyleProp<ViewStyle>;
   innerStartEnhancer?: React.ReactElement;
   innerEndEnhancer?: React.ReactElement;
+  input?: React.ReactNode;
+  useButton?: React.ReactNode;
 }
 
 export type InputProps = StyledComponentProps & TextInputProps & ComponentProps;
@@ -314,6 +316,8 @@ export class InputComponent extends React.Component<InputProps> {
       inputContainerStyle,
       innerStartEnhancer,
       innerEndEnhancer,
+      input,
+      useButton,
       ...restProps
     } = this.props;
     const componentStyle: StyleType = this.getComponentStyle(themedStyle);
@@ -338,15 +342,21 @@ export class InputComponent extends React.Component<InputProps> {
             ]}
           >
             {innerStartEnhancer}
-            <TextInput
-              ref={this.textInputRef}
-              {...restProps}
-              style={[componentStyle.text, styles.text, textStyle]}
-              placeholderTextColor={componentStyle.placeholder.color}
-              editable={!restProps.disabled}
-              onFocus={this.onTextFieldFocus}
-              onBlur={this.onTextFieldBlur}
-            />
+            {input ? (
+              input
+            ) : useButton ? (
+              <></>
+            ) : (
+              <TextInput
+                ref={this.textInputRef}
+                {...restProps}
+                style={[componentStyle.text, styles.text, textStyle]}
+                placeholderTextColor={componentStyle.placeholder.color}
+                editable={!restProps.disabled}
+                onFocus={this.onTextFieldFocus}
+                onBlur={this.onTextFieldBlur}
+              />
+            )}
             {iconElement}
             {innerEndEnhancer}
           </View>
