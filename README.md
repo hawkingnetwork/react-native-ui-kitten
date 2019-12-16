@@ -1,5 +1,5 @@
 
-# UI Kitten [<img src="https://i.imgur.com/oMcxwZ0.png" alt="Eva Design System" height="20px" />][link:eva] [![npm][badge:license]]() [![Build Status][badge:travis]][link:travis] [![Coverage Status][badge:coveralls]][link:coveralls]
+# UI Kitten [<img src="https://i.imgur.com/oMcxwZ0.png" alt="Eva Design System" height="20px" />][link:eva] [![npm][badge:license]]() [![Build Status][badge:github-actions]][link:github-actions] [![Coverage Status][badge:coveralls]][link:coveralls]
 
 [Documentation][link:doc-homepage]
 
@@ -36,7 +36,13 @@ There is a huge variety of customizable layouts, use “as is” or add new bloc
 Start a new app with UI Kitten template from a scratch:
 
 ```bash
-npx react-native init MyApp --template react-native-template-ui-kitten
+npx react-native init MyApp --template @ui-kitten/template-js
+```
+
+Or, if you want to init with TypeScript:
+
+```bash
+npx react-native init MyApp --template @ui-kitten/template-ts
 ```
 
 This will setup a new React Native application configured with UI Kitten.
@@ -46,7 +52,7 @@ Refer to the [Documentation][link:doc-where-start] for more options to start.
 
 Easy way to integrate UI Kitten with backend ([Java][link:ui-kitten-bundle-java], [.NET Core][link:ui-kitten-bundle-dotnet-core]).
 
-[<img src="https://i.imgur.com/oSaGaCv.jpg">][link:ui-kitten-bundles]
+[<img src="https://i.imgur.com/HVNZQGR.jpg">][link:ui-kitten-bundles]
 
 ## How can I support the developers?
 - Star our GitHub repo :star:
@@ -66,11 +72,11 @@ Made with :heart: by [Akveo team][link:akveo-homepage]. Follow us on [Twitter][l
 We're always happy to receive your feedback!
 
 [badge:license]: https://img.shields.io/npm/l/react-native-ui-kitten.svg
-[badge:travis]: https://travis-ci.com/akveo/react-native-ui-kitten.svg?branch=master
+[badge:github-actions]: https://github.com/akveo/react-native-ui-kitten/workflows/Build/badge.svg
 [badge:coveralls]: https://coveralls.io/repos/github/akveo/react-native-ui-kitten/badge.svg?branch=master
 
 [link:eva]: https://eva.design
-[link:travis]: https://travis-ci.com/akveo/react-native-ui-kitten
+[link:github-actions]: https://github.com/akveo/react-native-ui-kitten/actions
 [link:coveralls]: https://coveralls.io/github/akveo/react-native-ui-kitten?branch=master
 [link:doc-homepage]: https://akveo.github.io/react-native-ui-kitten
 [link:doc-where-start]: https://akveo.github.io/react-native-ui-kitten/docs/getting-started/where-to-start

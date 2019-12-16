@@ -36,28 +36,33 @@ The components documentation is taken from the component comment sections.
 
 - docs - Documentation and framework website built on top on the framework
 - src
+    - components - `@ui-kitten/components` package. UI components itself.     
+    - eva-icons - `@ui-kitten/eva-icons` package. Eva Icons for React Native     
+    - date-fns - `@ui-kitten/moment` package. Services that allows UI Kitten components to work with date-fns.
+    - moment - `@ui-kitten/moment` package. Services that allows UI Kitten components to work with moment.js.    
+    - template-js - `@ui-kitten/template-js` package. Template app for creating UI Kitten project with React Native CLI.    
+    - template-ts - `@ui-kitten/template-ts` package. Template app for creating TypeScript UI Kitten project with React Native CLI.     
     - playground - independent module with runnable examples for each feature
-    - framework - Framework itself, represents the npm package     
       
 ## UI Kit 
 
-Located in [./src/framework](./src/framework). Divided into two dirs:
+Located in [./src/framework](./src/components). Divided into two dirs:
 
-- [theme](./src/framework/theme) - Contains styling services and supporting components used to provide styles to basic components.
-- [ui](./src/framework/ui) - Contains basic UI components.
+- [theme](./src/components/theme) - Contains styling services and supporting components used to provide styles to basic components.
+- [ui](./src/components/ui) - Contains basic UI components.
 
 ## Styling services
 
-Located in [./src/framework/theme](./src/framework/theme)
+Located in [./src/framework/theme](./src/components/theme)
 
-- [theme](./src/framework/theme/theme) - ThemeProvider component. Used to provide one of Eva themes used to style basic components.
-- [mapping](./src/framework/theme/mapping) - MappingProvider component. Used to provide one of Eva mappings to style basic components.
-- [style](./src/framework/theme/style) - StyleProvider components. This mixes both Theme- and Mapping- providers to provide usable basic component style object.
-- [application](./src/framework/theme/application) - Global ApplicationProvider component. This mixes StyleProvider implementation with Eva processing engine.
+- [theme](./src/components/theme/theme) - ThemeProvider component. Used to provide one of Eva themes used to style basic components.
+- [mapping](./src/components/theme/mapping) - MappingProvider component. Used to provide one of Eva mappings to style basic components.
+- [style](./src/components/theme/style) - StyleProvider components. This mixes both Theme- and Mapping- providers to provide usable basic component style object.
+- [application](./src/components/theme/application) - Global ApplicationProvider component. This mixes StyleProvider implementation with Eva processing engine.
 
 ### Basic UI components
 
-Located in [./src/framework/ui](./src/framework/ui)
+Located in [./src/components/ui](./src/components/ui)
 
 Each component implementation can be found in a directory with the corresponding name.
 
@@ -67,7 +72,7 @@ Each component implementation can be found in a directory with the corresponding
 - `*.spec.tsx` - component tests.
 - `*.spec.tsx.snap` - component test snapshots. This is a generated file. Could be presented or not depending on tests.
 
-Some of the components can have a more complex implementation. In this case, the final component implementation could be divided into sub-components, but tests should be written in a single `*.spec` file. The good example is [TabView](./src/framework/ui/tab). 
+Some of the components can have a more complex implementation. In this case, the final component implementation could be divided into sub-components, but tests should be written in a single `*.spec` file. The good example is [TabView](./src/components/ui/tab). 
    
    
 # Documentation
@@ -185,31 +190,28 @@ And don't forget to specify the language above your example.
 
 ## Create a new component
 
-- create directory in `./src/framework/ui/awesomeComponent` with following files:
+- create directory in `./src/components/ui/awesomeComponent` with following files:
 ````
 - awesomeComponent.component.tsx (component file)
 - awesomeComponent.spec.tsx (component tests)
 ````
 
-- create directory in `./src/playground/src/ui/screen/awesomeComponent` with following files:
+- create directory in `./src/playground/src/scenes/awesomeComponent` with following files:
 ````
-- awesomeComponent.container.tsx (component showcase container)
+- awesomeComponent.component.tsx (component showcase container)
 - awesomeComponentShowcase.component.tsx (basic component showcase)
 - type.tsx (component configuration file)
 ````
 
-Look through already existing showcases and use similar implementation (e.g [Button Showcase](./src/playground/src/ui/screen/button))
+Look through already existing showcases and use similar implementation (e.g [Button Showcase](./src/playground/src/scenes/button))
 
 - register your showcase in a playground: 
 
-Open `./src/playground/src/navigation/navigation.component.tsx` and expand playground navigation with your component container:
+Open `./src/playground/src/navigation/components.navigator.tsx` and expand playground navigation with your component container:
 ```
-import {
-  ...
-  AwesomeComponentContainer,
-} from '../ui/screen';
+import { AwesomeComponentScreen } from '@pg/scenes/awesomeComponent/awesomeComponent.component';
 ...
-[Awesome Component]: AwesomeComponentContainer
+['AwesomeComponent']: AwesomeComponentScreen
 ```
 
 ## Release
@@ -219,19 +221,17 @@ import {
 To start a new release (publish the framework packages on NPM) you need:
 
 1. Create a new release branch with template `release/vX.X.X`
-3. Run tests: `npm run release:validate`
+2. Run tests: `npm run lint && npm run test`
 3. MANUALLY update a version in main ./package.json to a new one
-4. Generate documentation if needed: `npm run docs:start`
-5. Generate changelog: `npm run version:changelog`
-6. Fix/expand changelog manually
-7. Update documentation (e.g [DEV_DOCS.md](./DEV_DOCS.md)) files if needed
-8. Push the branch, create PR, approve - merge
-9. Pull the upstream (master or another version branch (e.g. 4.0.1, next))   
-10. Run tests: `npm run release:validate`
-11. Assemble build: `npm run release:prepare`
-12. Publish the package to npm: `npm run release`
-13. Create and push [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging) with template `(vX.X.X)`
-14. Create release on GitHub for the tag
+4. Generate changelog: `npm run bump-version`
+5. Fix/expand changelog manually
+6. Update documentation (e.g [DEV_DOCS.md](./DEV_DOCS.md)) files if needed
+7. Push the branch, create PR, approve - merge
+8. Pull the upstream (master or another version branch (e.g. 4.0.1, next))   
+9. Publish documentation: `npm run publish-docs`
+10. Publish framework packages: `npm run publish-packages`
+11. Create and push [git tag](https://git-scm.com/book/en/v2/Git-Basics-Tagging) with template `(vX.X.X)`
+12. Create release on GitHub for the tag
 
 # Playground
 
@@ -239,7 +239,7 @@ Playground is an example app built on top of the [Expo](https://github.com/expo/
 
 ## Start a Playground
 
-`npm i && npm run start:pg:dev` from the project root
+`yarn && yarn playground start` from the project root
 
 ### Playground environments:
 
@@ -256,11 +256,11 @@ git clone https://github.com/eva-design/eva
 ```
 - Ensure you have the following structure of repos:
 ```
-- /Users/KittenDeveloper/
+- /Users/UIKittenDeveloper/
   - react-native-ui-kitten
   - eva
 ```
-- Install dependencies if needed and finally run `npm run start:pg:dev`
+- Install dependencies if needed and finally run `yarn playground start:dev`
 
 # Kitten Tricks
 
@@ -288,12 +288,12 @@ git clone https://github.com/eva-design/eva
 ```
 - Ensure you have the following structure of repos:
 ```
-- /Users/KittenDeveloper/
+- /Users/UIKittenDeveloper/
   - react-native-ui-kitten
   - eva
   - kittenTricks
 ```
-- Inside react-native-ui-kitten dir run `rm -rf ./node_modules ./package-lock.json && npm i` to install latest dependencies.
+- Inside react-native-ui-kitten dir run `rm -rf yarn.lock ./node_modules && yarn` to install latest dependencies.
 - Inside Kitten Tricks directory `rm -rf ./node_modules ./package-lock.json && npm i` to install the latest dependencies.
 - `npm run start:dev` - this will start application in development mode and watch for UI Kitten and Eva changes.
 

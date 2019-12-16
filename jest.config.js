@@ -1,13 +1,8 @@
 module.exports = {
   preset: 'react-native',
-  cacheDirectory: './dist/jest/cache',
-  coverageDirectory: './dist/jest/coverage',
+  cacheDirectory: '<rootDir>/dist/jest/cache',
+  coverageDirectory: '<rootDir>/dist/jest/coverage',
   snapshotResolver: '<rootDir>/jest.config.snapshot',
-  moduleNameMapper: {
-    "^@ui-kitten/*": "<rootDir>/src/$1",
-    "^@kitten/*": "<rootDir>/src/framework/$1",
-    "^react-native-ui-kitten": "<rootDir>/src/framework/$1",
-  },
   moduleFileExtensions: [
     'ts',
     'tsx',
@@ -15,6 +10,8 @@ module.exports = {
   ],
   modulePathIgnorePatterns: [
     '<rootDir>/src/playground/',
+    '<rootDir>/src/template-js/',
+    '<rootDir>/src/template-ts/',
   ],
   testPathIgnorePatterns: [
     '<rootDir>/node_modules',

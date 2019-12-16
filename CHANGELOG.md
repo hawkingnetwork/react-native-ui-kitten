@@ -1,3 +1,32 @@
+## <small>4.3.2 (2019-12-13)</small>
+
+* fix(components): resolve bundling on the web ([2ca7cd0](https://github.com/akveo/react-native-ui-kitten/commit/2ca7cd0))
+* fix(components): calendar and modal performance ([85bb1df](https://github.com/akveo/react-native-ui-kitten/commit/85bb1df))
+
+
+
+## <small>4.3.1 (2019-12-04)</small>
+
+* fix: typescript build issues ([980414b](https://github.com/akveo/react-native-ui-kitten/commit/980414b))
+
+
+
+## 4.3.0 (2019-12-04)
+
+* chore: rename main package to @ui-kitten/components ([b6cf0b9](https://github.com/akveo/react-native-ui-kitten/commit/b6cf0b9))
+* chore: upgrade templates to latest react-native ([3759572](https://github.com/akveo/react-native-ui-kitten/commit/3759572))
+* fix(components): calendar - date bounds disabling behavior ([61e4806](https://github.com/akveo/react-native-ui-kitten/commit/61e4806))
+* fix(components): calendar - replace UTC dates with regular dates ([700a902](https://github.com/akveo/react-native-ui-kitten/commit/700a902))
+* fix(components): list - add ability to override keyExtractor ([d5ee185](https://github.com/akveo/react-native-ui-kitten/commit/d5ee185))
+* fix(components): modal center positioning ([301e3f4](https://github.com/akveo/react-native-ui-kitten/commit/301e3f4))
+* feat(components): card component add ([f6c5899](https://github.com/akveo/react-native-ui-kitten/commit/f6c5899))
+* feat(components): datepicker - add placeholder property ([d34bcd4](https://github.com/akveo/react-native-ui-kitten/commit/d34bcd4))
+* refactor(components): unify icon prop stylings ([156646d](https://github.com/akveo/react-native-ui-kitten/commit/156646d))
+* chore(components): update components to eva 1.3 ([c958482](https://github.com/akveo/react-native-ui-kitten/commit/c958482))
+* docs(guides): simplify getting-started ([a93bfed](https://github.com/akveo/react-native-ui-kitten/commit/a93bfed))
+
+
+
 ## 4.3.0-beta.1 (2019-10-17)
 
 * feat(docs): clickable examples ([a08e1d3](https://github.com/akveo/react-native-ui-kitten/commit/a08e1d3))

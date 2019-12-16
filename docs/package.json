@@ -1,16 +1,22 @@
 {
-  "name": "docs",
+  "name": "@ui-kitten/docs",
   "version": "1.0.0",
-  "description": "",
+  "private": true,
+  "workspaces": {
+    "nohoist": [
+      "*",
+      "*/**"
+    ]
+  },
   "scripts": {
     "ng": "ng",
     "ngh": "ngh",
     "start": "ng serve",
     "build": "ng build",
-    "prebuild:prod": "rimraf dist",
+    "clean": "rimraf dist",
+    "landing": "cp -r src/landing/ dist/",
     "build:prod": "npm run build -- docs --prod --aot --base-href '/react-native-ui-kitten/docs/'",
-    "postbuild:prod": "cp -r src/landing/ dist/",
-    "docs:gh-pages": "npm run ngh -- --dir ./dist"
+    "gh-pages": "npm run ngh -- --dir ./dist"
   },
   "dependencies": {
     "@angular/animations": "8.0.0",
@@ -50,8 +56,6 @@
     "codelyzer": "^5.0.1",
     "protractor": "^5.3.2",
     "stylelint": "7.13.0",
-    "tslint": "5.8.0",
-    "typescript": "3.4.5",
     "uglify-es": "3.3.9",
     "uglifyjs-webpack-plugin": "2.1.2"
   },
