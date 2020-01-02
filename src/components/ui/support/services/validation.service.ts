@@ -1,6 +1,7 @@
 export const isValidString = (source: string | null): boolean => {
-  if (source && source.length > 0) {
-    return true;
-  }
-  return false;
+  // if (source && source.length > 0) {
+  //   return true;
+  // }
+  // return false;
+  return typeof source === "string";
 };
