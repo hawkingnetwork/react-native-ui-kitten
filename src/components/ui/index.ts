@@ -104,6 +104,11 @@ export {
   InputProps,
   InputElement,
 } from './input/input.component';
+export{
+  SelectInput,
+  SelectInputProps,
+  SelectInputElement,
+} from './selectInput/selectInput.component'
 export {
   Layout,
   LayoutProps,
