@@ -4,7 +4,7 @@
  * Licensed under the MIT License. See License.txt in the project root for license information.
  */
 
-import React from 'react';
+import React from "react";
 import {
   GestureResponderEvent,
   ImageStyle,
@@ -18,24 +18,24 @@ import {
   TouchableWithoutFeedbackProps,
   View,
   ViewProps,
-  ViewStyle,
-} from 'react-native';
+  ViewStyle
+} from "react-native";
 import {
   Interaction,
   styled,
   StyledComponentProps,
-  StyleType,
-} from '@kitten/theme';
-import { Text, TextElement } from '../text/text.component';
-import { IconElement } from '../icon/icon.component';
+  StyleType
+} from "@kitten/theme";
+import { Text, TextElement } from "../text/text.component";
+import { IconElement } from "../icon/icon.component";
 import {
   allWithRest,
   isValidString,
   WebEventResponder,
   WebEventResponderCallbacks,
-  WebEventResponderInstance,
-} from '../support/services';
-import { FlexStyleProps, InputFocusEvent } from '../support/typings';
+  WebEventResponderInstance
+} from "../support/services";
+import { FlexStyleProps, InputFocusEvent } from "../support/typings";
 
 type IconProp = (style: StyleType) => IconElement;
 
@@ -49,7 +49,7 @@ export interface InputProps extends StyledComponentProps, TextInputProps {
   icon?: IconProp;
   textStyle?: StyleProp<TextStyle>;
   labelStyle?: StyleProp<TextStyle>;
-  captionTextStyle?: StyleProp<TextStyle>;
+  captionStyle?: StyleProp<TextStyle>;
   onIconPress?: (event: GestureResponderEvent) => void;
   startEnhancer?: React.ReactElement;
   endEnhancer?: React.ReactElement;
@@ -72,7 +72,7 @@ export type InputElement = React.ReactElement<InputProps>;
  *
  * @method {() => void} blur - Removes focus from an input or view. This is the opposite of `focus()`.
  *
- * @method {() => boolean} isFocused - Returns if the input is currently focused.
+ * @method {() => boolean} isFocused - Returns true if the input is currently focused.
  *
  * @method {() => void} clear - Removes all text from the input.
  *
@@ -87,21 +87,21 @@ export type InputElement = React.ReactElement<InputProps>;
  * Can be `small`, `medium` or `large`.
  * Default is `medium`.
  *
- * @property {string} label - Determines label of the component.
- *
- * @property {StyleProp<TextStyle>} labelStyle - Customizes label style.
- *
- * @property {string} caption - Determines caption of the component.
- *
- * @property {StyleProp<TextStyle>} captionStyle - Customizes caption style.
- *
  * @property {string} placeholder - Determines placeholder of the component.
  *
- * @property {StyleProp<TextStyle>} textStyle - Customizes text style.
+ * @property {string} label - Determines text rendered at the top of the component.
+ *
+ * @property {string} caption - Determines caption text rendered at the bottom of the component.
  *
  * @property {(style: StyleType) => ReactElement} icon - Determines icon of the component.
  *
  * @property {(style: StyleType) => ReactElement} captionIcon - Determines caption icon.
+ *
+ * @property {StyleProp<TextStyle>} labelStyle - Customizes label style.
+ *
+ * @property {StyleProp<TextStyle>} captionStyle - Customizes caption style.
+ *
+ * @property {StyleProp<TextStyle>} textStyle - Customizes text style.
  *
  * @property {TextInputProps} ...TextInputProps - Any props applied to TextInput component.
  *
@@ -119,17 +119,19 @@ export type InputElement = React.ReactElement<InputProps>;
  *
  * @overview-example InputWithCaption
  *
+ * @overview-example InputReference
+ *
  * @example InputInlineStyling
  *
  * @example InputWithExternalSourceIcon
  */
 export class InputComponent extends React.Component<InputProps>
   implements WebEventResponderCallbacks {
-  static styledComponentName: string = 'Input';
+  static styledComponentName: string = "Input";
 
   private textInputRef: React.RefObject<TextInput> = React.createRef();
   private webEventResponder: WebEventResponderInstance = WebEventResponder.create(
-    this,
+    this
   );
 
   public focus = (): void => {
@@ -184,7 +186,7 @@ export class InputComponent extends React.Component<InputProps>
     const flatStyles: ViewStyle = StyleSheet.flatten(this.props.style);
     const { rest: inputContainerStyle, ...containerStyle } = allWithRest(
       flatStyles,
-      FlexStyleProps,
+      FlexStyleProps
     );
 
     const {
@@ -220,10 +222,10 @@ export class InputComponent extends React.Component<InputProps>
       container: containerStyle,
       inputContainer: {
         ...containerParameters,
-        ...inputContainerStyle,
+        ...inputContainerStyle
       },
       captionContainer: {
-        marginTop: captionMarginTop,
+        marginTop: captionMarginTop
       },
       text: {
         marginHorizontal: textMarginHorizontal,
@@ -232,41 +234,41 @@ export class InputComponent extends React.Component<InputProps>
         // FIXME: RN issue (https://github.com/facebook/react-native/issues/7823)
         // lineHeight: textLineHeight,
         fontWeight: textFontWeight,
-        color: textColor,
+        color: textColor
       },
       placeholder: {
-        color: placeholderColor,
+        color: placeholderColor
       },
       icon: {
         width: iconWidth,
         height: iconHeight,
         marginHorizontal: iconMarginHorizontal,
-        tintColor: iconTintColor,
+        tintColor: iconTintColor
       },
       label: {
         color: labelColor,
         fontSize: labelFontSize,
         lineHeight: labelLineHeight,
         marginBottom: labelMarginBottom,
-        fontWeight: labelFontWeight,
+        fontWeight: labelFontWeight
       },
       captionIcon: {
         width: captionIconWidth,
         height: captionIconHeight,
         tintColor: captionIconTintColor,
-        marginRight: captionIconMarginRight,
+        marginRight: captionIconMarginRight
       },
       captionLabel: {
         fontSize: captionFontSize,
         fontWeight: captionFontWeight,
         lineHeight: captionLineHeight,
-        color: captionColor,
-      },
+        color: captionColor
+      }
     };
   };
 
   private renderIconTouchableElement = (
-    style: StyleType,
+    style: StyleType
   ): React.ReactElement<TouchableWithoutFeedbackProps> => {
     const iconElement: IconElement = this.renderIconElement(style);
 
@@ -282,7 +284,7 @@ export class InputComponent extends React.Component<InputProps>
 
     return React.cloneElement(iconElement, {
       key: 0,
-      style: [style, styles.icon, iconElement.props.style],
+      style: [style, iconElement.props.style]
     });
   };
 
@@ -298,7 +300,7 @@ export class InputComponent extends React.Component<InputProps>
     return (
       <Text
         key={2}
-        style={[style, styles.captionLabel, this.props.captionTextStyle]}
+        style={[style, styles.captionLabel, this.props.captionStyle]}
       >
         {this.props.caption}
       </Text>
@@ -310,12 +312,12 @@ export class InputComponent extends React.Component<InputProps>
 
     return React.cloneElement(iconElement, {
       key: 3,
-      style: [style, styles.captionIcon, iconElement.props.style],
+      style: [style, iconElement.props.style]
     });
   };
 
   private renderComponentChildren = (
-    style: StyleType,
+    style: StyleType
   ): React.ReactNodeArray => {
     const { icon, label, captionIcon, caption } = this.props;
 
@@ -323,7 +325,7 @@ export class InputComponent extends React.Component<InputProps>
       icon && this.renderIconTouchableElement(style.icon),
       isValidString(label) && this.renderLabelElement(style.label),
       isValidString(caption) && this.renderCaptionElement(style.captionLabel),
-      captionIcon && this.renderCaptionIconElement(style.captionIcon),
+      captionIcon && this.renderCaptionIconElement(style.captionIcon)
     ];
   };
 
@@ -346,11 +348,11 @@ export class InputComponent extends React.Component<InputProps>
       iconElement,
       labelElement,
       captionElement,
-      captionIconElement,
+      captionIconElement
     ] = this.renderComponentChildren(componentStyle);
 
     return (
-      <View style={[componentStyle.container, styles.container]}>
+      <View style={componentStyle.container}>
         {labelElement}
         <View style={[styles.inputAndEnhancerContainer]}>
           {startEnhancer}
@@ -358,7 +360,7 @@ export class InputComponent extends React.Component<InputProps>
             style={[
               componentStyle.inputContainer,
               styles.inputContainer,
-              inputContainerStyle,
+              inputContainerStyle
             ]}
           >
             {innerStartEnhancer}
@@ -369,15 +371,15 @@ export class InputComponent extends React.Component<InputProps>
             ) : (
               <TextInput
                 ref={this.textInputRef}
+                placeholderTextColor={componentStyle.placeholder.color}
                 {...restProps}
                 {...this.webEventResponder.eventHandlers}
                 style={[
                   componentStyle.text,
                   styles.text,
                   webStyles.text,
-                  textStyle,
+                  textStyle
                 ]}
-                placeholderTextColor={componentStyle.placeholder.color}
                 editable={!restProps.disabled}
                 onFocus={this.onTextFieldFocus}
                 onBlur={this.onTextFieldBlur}
@@ -402,41 +404,37 @@ export class InputComponent extends React.Component<InputProps>
 const styles = StyleSheet.create({
   container: {},
   inputAndEnhancerContainer: {
-    flexDirection: 'row',
+    flexDirection: "row"
   },
-
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1
   },
   captionContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center"
   },
   text: {
     flexGrow: 1,
     flexShrink: 1,
-    flexBasis: 'auto',
+    flexBasis: "auto"
   },
-  placeholder: {},
-  icon: {},
   label: {
-    textAlign: 'left',
+    textAlign: "left"
   },
-  captionIcon: {},
   captionLabel: {
-    textAlign: 'left',
-  },
+    textAlign: "left"
+  }
 });
 
 const webStyles =
-  Platform.OS === 'web' &&
+  Platform.OS === "web" &&
   StyleSheet.create({
     text: {
       // @ts-ignore
-      outlineWidth: 0,
-    },
+      outlineWidth: 0
+    }
   });
 
 export const Input = styled<InputProps>(InputComponent);
