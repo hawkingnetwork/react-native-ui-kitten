@@ -57,7 +57,9 @@ export interface InputProps extends StyledComponentProps, TextInputProps {
   innerStartEnhancer?: React.ReactElement;
   innerEndEnhancer?: React.ReactElement;
   input?: React.ReactNode;
+  inputComponent?: React.ComponentType<any>;
   useButton?: React.ReactNode;
+  innerRef?: React.Ref<TextInput>;
 }
 
 export type InputElement = React.ReactElement<InputProps>;
@@ -340,6 +342,8 @@ export class InputComponent extends React.Component<InputProps>
       innerEndEnhancer,
       input,
       useButton,
+      inputComponent,
+      innerRef,
       ...restProps
     } = this.props;
     const componentStyle: StyleType = this.getComponentStyle(themedStyle);
@@ -365,12 +369,24 @@ export class InputComponent extends React.Component<InputProps>
           >
             {innerStartEnhancer}
             {input ? (
-              input
-            ) : useButton ? (
-              <></>
+              React.cloneElement(input as React.ReactElement, {
+                key: "input",
+                placeholderTextColor: componentStyle.placeholder.color,
+                ...restProps,
+                ...this.webEventResponder.eventHandlers,
+                style: [
+                  componentStyle.text,
+                  styles.text,
+                  webStyles.text,
+                  textStyle
+                ],
+                editable: !restProps.disabled,
+                onFocus: this.onTextFieldFocus,
+                onBlur: this.onTextFieldBlur
+              })
             ) : (
               <TextInput
-                ref={this.textInputRef}
+                ref={innerRef}
                 placeholderTextColor={componentStyle.placeholder.color}
                 {...restProps}
                 {...this.webEventResponder.eventHandlers}
