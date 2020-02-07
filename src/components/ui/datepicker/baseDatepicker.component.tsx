@@ -35,7 +35,6 @@ import {
 
 type IconProp = (style: StyleType) => IconElement;
 
-
 export interface BaseDatepickerProps<D = Date> extends StyledComponentProps,
   TouchableOpacityProps,
   BaseCalendarProps<D> {
@@ -51,13 +50,14 @@ export interface BaseDatepickerProps<D = Date> extends StyledComponentProps,
   labelStyle?: StyleProp<TextStyle>;
   captionStyle?: StyleProp<TextStyle>;
   placement?: PopoverPlacement | string;
+  backdropStyle?: StyleProp<ViewStyle>;
+  onFocus?: () => void;
+  onBlur?: () => void;
 }
 
 interface State {
   visible: boolean;
 }
-
-const FULL_DATE_FORMAT_STRING: string = 'DD/MM/YYYY';
 
 export abstract class BaseDatepickerComponent<P, D = Date> extends React.Component<BaseDatepickerProps<D> & P, State> {
 
@@ -82,11 +82,11 @@ export abstract class BaseDatepickerComponent<P, D = Date> extends React.Compone
   };
 
   public focus = (): void => {
-    this.setState({ visible: true }, this.dispatchActive);
+    this.setState({ visible: true }, this.onPickerVisible);
   };
 
   public blur = (): void => {
-    this.setState({ visible: true }, this.dispatchActive);
+    this.setState({ visible: false }, this.onPickerInvisible);
   };
 
   public isFocused = (): boolean => {
@@ -98,10 +98,6 @@ export abstract class BaseDatepickerComponent<P, D = Date> extends React.Compone
   protected abstract getComponentTitle(): string;
 
   protected abstract renderCalendar(): CalendarElement<D> | RangeCalendarElement<D>;
-
-  protected formatDateToString(date: D): string {
-    return this.props.dateService.format(date, FULL_DATE_FORMAT_STRING);
-  }
 
   private getComponentStyle = (style: StyleType): StyleType => {
     const {
@@ -184,7 +180,7 @@ export abstract class BaseDatepickerComponent<P, D = Date> extends React.Compone
   };
 
   private onPress = (event: GestureResponderEvent): void => {
-    this.toggleVisibility();
+    this.setPickerVisible();
 
     if (this.props.onPress) {
       this.props.onPress(event);
@@ -207,17 +203,28 @@ export abstract class BaseDatepickerComponent<P, D = Date> extends React.Compone
     }
   };
 
-  private toggleVisibility = (): void => {
-    const visible: boolean = !this.state.visible;
-    this.setState({ visible }, this.dispatchActive);
+  private onPickerVisible = (): void => {
+    this.props.dispatch([Interaction.ACTIVE]);
+
+    if (this.props.onFocus) {
+      this.props.onFocus();
+    }
   };
 
-  private dispatchActive = (): void => {
-    if (this.state.visible) {
-      this.props.dispatch([Interaction.ACTIVE]);
-    } else {
-      this.props.dispatch([]);
+  private onPickerInvisible = (): void => {
+    this.props.dispatch([]);
+
+    if (this.props.onBlur) {
+      this.props.onBlur();
     }
+  };
+
+  private setPickerVisible = (): void => {
+    this.setState({ visible: true }, this.onPickerVisible);
+  };
+
+  private setPickerInvisible = (): void => {
+    this.setState({ visible: false }, this.onPickerInvisible);
   };
 
   private renderIconElement = (style: StyleType): React.ReactElement<ImageProps> => {
@@ -304,7 +311,7 @@ export abstract class BaseDatepickerComponent<P, D = Date> extends React.Compone
   };
 
   public render(): React.ReactElement<ViewProps> {
-    const { themedStyle, style, placement } = this.props;
+    const { themedStyle, style, placement, backdropStyle } = this.props;
     const { popover, ...componentStyle }: StyleType = this.getComponentStyle(themedStyle);
 
     const [
@@ -321,10 +328,11 @@ export abstract class BaseDatepickerComponent<P, D = Date> extends React.Compone
         <Popover
           ref={this.popoverRef}
           style={[popover, styles.popover]}
+          backdropStyle={backdropStyle}
           placement={placement}
           visible={this.state.visible}
           content={calendarElement}
-          onBackdropPress={this.toggleVisibility}>
+          onBackdropPress={this.setPickerInvisible}>
           {controlElement}
         </Popover>
         <View style={[componentStyle.captionContainer, styles.captionContainer]}>
@@ -356,4 +364,3 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
 });
-

@@ -377,7 +377,7 @@ export class InputComponent extends React.Component<InputProps>
                 style: [
                   componentStyle.text,
                   styles.text,
-                  webStyles.text,
+                  platformStyles.text,
                   textStyle
                 ],
                 editable: !restProps.disabled,
@@ -393,7 +393,7 @@ export class InputComponent extends React.Component<InputProps>
                 style={[
                   componentStyle.text,
                   styles.text,
-                  webStyles.text,
+                  platformStyles.text,
                   textStyle
                 ]}
                 editable={!restProps.disabled}
@@ -444,13 +444,16 @@ const styles = StyleSheet.create({
   }
 });
 
-const webStyles =
-  Platform.OS === "web" &&
-  StyleSheet.create({
-    text: {
-      // @ts-ignore
+const platformStyles = StyleSheet.create({
+  text: Platform.select({
+    default: null,
+    android: {
+      paddingVertical: 0
+    },
+    web: {
       outlineWidth: 0
     }
-  });
+  })
+});
 
 export const Input = styled<InputProps>(InputComponent);

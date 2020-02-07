@@ -78,7 +78,11 @@ export type RangeDatepickerElement<D = Date> = React.ReactElement<RangeDatepicke
  *
  * @property {(date: D) => boolean} filter - Predicate that decides which cells will be disabled.
  *
- * @property {(date: D) => void} onSelect - Selection emitter. Fires when another day cell is pressed.
+ * @property {(date: D) => void} onSelect - Fires when day cell is pressed.
+ *
+ * @property {() => void} onFocus - Fires when picker becomes visible.
+ *
+ * @property {() => void} onBlur - Fires when picker becomes invisible.
  *
  * @property {(date: D, style: StyleType) => ReactElement} renderDay - Should return the content of day cell.
  *
@@ -88,11 +92,13 @@ export type RangeDatepickerElement<D = Date> = React.ReactElement<RangeDatepicke
  *
  * @property {() => ReactElement} renderFooter - Should return the footer.
  *
- * @property {string | PopoverPlacement} placement - Determines the actualPlacement of the popover.
+ * @property {string | PopoverPlacement} placement - Determines the placement of the popover.
  * Can be `left`, `top`, `right`, `bottom`, `left start`, `left end`, `top start`, `top end`, `right start`,
  * `right end`, `bottom start` or `bottom end`.
  * Default is `bottom`.
  * Tip: use one of predefined placements instead of strings, e.g `PopoverPlacements.TOP`
+ *
+ * @property {StyleProp<ViewStyle>} backdropStyle - Determines the style of backdrop.
  *
  * @property {TouchableOpacityProps} ...TouchableOpacityProps - Any props applied to TouchableOpacity component.
  *
@@ -136,8 +142,8 @@ export class RangeDatepickerComponent<D = Date> extends BaseDatepickerComponent<
     const { startDate, endDate } = this.props.range;
 
     if (startDate || endDate) {
-      const start: string = startDate ? this.formatDateToString(startDate) : '';
-      const end: string = endDate ? this.formatDateToString(endDate) : '';
+      const start: string = startDate ? this.props.dateService.format(startDate, null) : '';
+      const end: string = endDate ? this.props.dateService.format(endDate, null) : '';
 
       return `${start} - ${end}`;
     } else {
